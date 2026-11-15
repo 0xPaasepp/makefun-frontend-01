@@ -1,4 +1,4 @@
-import {esc,money,number,date,timeLeft,pot,fee,route,markdown,safeUrl,itemsOf,status,crumb,stats,pagination} from './main.js';
+import {esc,money,number,date,timeLeft,pot,fee,route,markdown,safeUrl,itemsOf,status,crumb,stats,pagination} from './desk.js';
 const css = document.createElement('link');
 css.rel = 'stylesheet'; css.href = new URL('details.css',import.meta.url).href;
 await new Promise((ok,fail) => { css.onload = ok; css.onerror = () => fail(Error('Could not load page styles.')); document.head.appendChild(css); });
