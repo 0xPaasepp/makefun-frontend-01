@@ -61,12 +61,27 @@ try {
  await mkdir(new URL('screenshots/',root),{recursive:true});
  const report=[];
  for(const shot of shots){const result=await open(shot.path,shot.viewport.width,shot.viewport.height);const bytes=await capture(new URL('screenshots/'+shot.file,root));report.push({route:shot.path,bytes,...result});}
- report.push({route:'#/ (phone)',...await open('#/',390,844)});
+ report.push({route:'#/profile/0xk4njut',...await open('#/profile/0xk4njut')});
+ for(const path of ['#/','#/bounty/makefun-frontend-01','#/bounty/makefun-frontend-01/leaderboard','#/profile/0xk4njut'])report.push({route:path+' (phone)',...await open(path,390,844)});
+ await open('#/',390,844);
  // Verify both theme modes and local filter updates without navigation.
  await evaluate(`document.querySelector('#theme').click()`);
  report.push({check:'alternate-theme',theme:await evaluate('document.documentElement.dataset.theme'),overflow:await evaluate('document.documentElement.scrollWidth>innerWidth')});
  await evaluate(`document.querySelector('[data-filter="free"]').click()`);
  report.push({check:'filter',selected:await evaluate(`document.querySelector('[data-filter="free"]').getAttribute('aria-pressed')`)});
+ await evaluate(`{document.querySelector('[data-filter="all"]').click();const input=document.querySelector('#search');input.value='radar';input.dispatchEvent(new Event('input',{bubbles:true}));}`);
+ const search=await evaluate(`({rows:document.querySelectorAll('.bounty-row').length,text:document.querySelector('#board-results').innerText})`);
+ if(!search.rows||!/radar/i.test(search.text))throw Error('Search did not return the matching live bounty');
+ report.push({check:'search',rows:search.rows});
+ await evaluate(`{const input=document.querySelector('#search');input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));const sort=document.querySelector('#sort');sort.value='entries';sort.dispatchEvent(new Event('change',{bubbles:true}));}`);
+ const entries=await evaluate(`[...document.querySelectorAll('.cell.entries')].map(x=>Number(x.innerText.replace(/[^0-9]/g,'')))`);
+ if(entries.some((n,i)=>i&&n>entries[i-1]))throw Error('Entry sorting is not descending');
+ report.push({check:'sort',descending:true});
+ await open('#/bounty/makefun-frontend-01/leaderboard');
+ await evaluate(`document.querySelector('[data-page="2"]').click()`);
+ const second=await evaluate(`document.querySelector('.pagination').innerText`);
+ if(!second.includes('2 /'))throw Error('Leaderboard pagination did not advance');
+ report.push({check:'pagination',page:second});
  report.push({check:'network',responses:network});
  await writeFile(new URL('verification.json',root),JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify(report,null,2));

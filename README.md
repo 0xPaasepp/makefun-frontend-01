@@ -12,7 +12,7 @@ A fast, easy-to-use make.fun frontend built from static files on make.fun's publ
 node serve.ts --port 8080
 ```
 
-Then open http://127.0.0.1:8080/ — board, bounty pages, leaderboard, and profiles, all on live API data. No build step, no external scripts, styles, or fonts. First load is 6 files, 43,004 bytes raw (14,327 gzip).
+Then open http://127.0.0.1:8080/ — board, bounty pages, leaderboard, and profiles, all on live API data. No build step, no external scripts, styles, or fonts.
 
 ---
 
