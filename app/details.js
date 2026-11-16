@@ -1,3 +1,4 @@
+// Detail views share the board’s live formatting and opportunity math.
 import {esc,money,number,date,timeLeft,pot,fee,opportunity,route,markdown,safeUrl,itemsOf,status,crumb,stats,pagination} from './desk.js';
 
 const css = document.createElement('link');
@@ -42,7 +43,7 @@ export function bounty(data,compact=false) {
 
 export function leaderboard(data,slug) {
   const count = itemsOf(data).length;
-  return crumb(`<a href="${route(slug)}">${esc(slug)}</a><span>/</span>Leaderboard`) + `<section class="detail-hero"><div><div class="eyebrow accent">THE RESULTS DESK</div><h1>Every entry.<br><span>Out in the open.</span></h1><p>${esc(data.title ?? data.competition?.title ?? slug)} · Live standings</p></div><div class="leader-count"><strong>${number(count)}</strong><span>ranked entries</span></div></section>` + tabs(slug,true) + '<div class="section-head"><h2>Live leaderboard</h2><span id="sync" class="sync">Live public data</span></div><p class="muted leaderboard-note">Development results are provisional. Open a builder’s profile to explore their record.</p><div id="leader-results"></div>';
+  return crumb(`<a href="${route(slug)}">${esc(slug)}</a><span>/</span>Leaderboard`) + `<section class="detail-hero"><div><div class="eyebrow accent">THE RESULTS DESK</div><h1>Every entry.<br><span>Out in the open.</span></h1><p>${esc(data.title ?? data.competition?.title ?? slug)} · Live standings</p></div><div class="leader-count"><strong>${number(count)}</strong><span>ranked entries</span></div></section>` + tabs(slug,true) + '<div class="section-head"><h2>Live leaderboard</h2><span id="sync" class="sync">Live public data</span></div><p class="muted leaderboard-note">Development results are provisional. Open a builder profile to explore the public record.</p><div id="leader-results"></div>';
 }
 
 function avatar(url,handle) {

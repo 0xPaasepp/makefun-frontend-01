@@ -1,3 +1,4 @@
+// The desk renders live public data with a deliberately small shared surface.
 const $ = selector => document.querySelector(selector);
 const sheet = document.createElement('link');
 sheet.rel = 'stylesheet';
@@ -31,7 +32,7 @@ async function load(key,force=false) {
   if (requests.has(key)) return requests.get(key);
   const request = (async () => {
     try {
-      const response = await fetch('https://make.fun/api'+key,{
+      const response = await (window.__apiFetch||fetch)('https://make.fun/api'+key,{
         headers: previous?.etag ? {'If-None-Match':previous.etag} : {},
         signal: AbortSignal.timeout(18000)
       });
@@ -111,7 +112,7 @@ export function pagination(total,current) {
 function board(data) {
   const entries = itemsOf(data);
   const active = entries.filter(accepting);
-  return `<section class="board-intro"><div><div class="eyebrow accent">THE BOUNTY DESK <span class="short-line"></span> LIVE ON MAKE.FUN</div><h1>Good ideas.<br><span>Real stakes.</span></h1><p>Find your next challenge. Build an agent, ship a program,<br class="desktop"> and let the results do the talking.</p></div><div class="board-summary"><span class="eyebrow">ON THE BOARD</span><strong>${money(active.reduce((sum,bounty) => sum+Number(pot(bounty)||0),0))}</strong><span>in live reward pools</span><div><b>${active.length}</b> accepting entries <span>↗</span></div></div></section><section class="board-section"><div class="section-head"><h2>Explore bounties <span class="count">${entries.length}</span></h2><span id="sync" class="sync">Live public data</span></div><div class="toolbar"><div class="filters" role="group" aria-label="Filter bounties">${[['all','All bounties'],['live','Accepting entries'],['free','Free entry']].map(([key,label],index) => `<button data-filter="${key}" class="${index ? '' : 'selected'}" aria-pressed="${!index}">${label}</button>`).join('')}</div><div class="search-sort"><label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" aria-label="Search bounties" placeholder="Find a challenge…"></label><select id="sort" aria-label="Sort bounties"><option value="reward">Highest reward</option><option value="deadline">Closing soon</option><option value="entries">Most entries</option></select></div></div><div id="board-results"></div></section>`;
+  return `<section class="board-intro"><div><div class="eyebrow accent">THE BOUNTY DESK <span class="short-line"></span> LIVE ON MAKE.FUN</div><h1>Good ideas.<br><span>Real stakes.</span></h1><p>Find your next challenge. Build an agent, ship a program,<br class="desktop"> and let the results do the talking.</p></div><div class="board-summary"><span class="eyebrow">ON THE BOARD</span><strong>${money(active.reduce((sum,bounty) => sum+Number(pot(bounty)||0),0))}</strong><span>in live reward pools</span><div><b>${active.length}</b> accepting entries <span>↗</span></div></div></section><section class="board-section"><div class="section-head"><h2>Explore bounties <span class="count">${entries.length}</span></h2><span id="sync" class="sync">Live public data</span></div><div class="toolbar"><div class="filters" role="group" aria-label="Filter bounties">${[['all','All bounties'],['live','Accepting entries'],['free','Free entry']].map(([key,label],index) => `<button data-filter="${key}" class="${index ? '' : 'selected'}" aria-pressed="${!index}">${label}</button>`).join('')}</div><div class="search-sort"><label class="search"><span aria-hidden="true">⌕</span><input type="search" id="search" aria-label="Search bounties" placeholder="Find a challenge…" aria-describedby="search-hint"><kbd id="search-hint" class="search-hint">/</kbd></label><select id="sort" aria-label="Sort bounties"><option value="reward">Highest reward</option><option value="deadline">Closing soon</option><option value="entries">Most entries</option></select></div></div><div id="board-results"></div></section>`;
 }
 
 function boardRows(list,current) {
@@ -235,7 +236,7 @@ $('#jump').onsubmit = event => {
 };
 $('.skip').onclick = event => { event.preventDefault(); $('#content').focus(); };
 document.addEventListener('keydown',event => {
-  if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { event.preventDefault(); jump(true); }
+  if (event.key === '/' && state?.type === 'board' && $('#search')) { event.preventDefault(); $('#search').focus(); }
   if (event.key === 'Escape') jump(false);
 });
 
