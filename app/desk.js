@@ -92,7 +92,7 @@ async function render(destination, entry, rebuild = true) {
   $('#notice').textContent = entry.stale ? 'Showing saved data. Refresh to try the connection again.' : '';
   window.__shotReady = true;
 }
-async function navigate(force = false) {
+export async function navigate(force = false) {
   const ticket = ++epoch; window.__shotReady = false; page = 1; filter = 'all'; query = ''; sort = 'reward';
   try {
     const destination = resolveRoute(), old = saved(destination.path);
@@ -133,5 +133,4 @@ document.addEventListener('visibilitychange',async () => {
   const ticket = epoch, previous = state;
   try { const entry = await load(previous.path); if (ticket !== epoch) return; const changed = JSON.stringify(previous.data) !== JSON.stringify(entry.data); if (changed && previous.type !== 'bounty') { state = {...previous,data:entry.data}; updateList(); } await render(previous,entry,changed && previous.type === 'bounty'); } catch {}
 });
-window.addEventListener('hashchange',() => navigate());
-navigate();
+export function boot(entry) { window.addEventListener('hashchange',() => navigate()); render({type:'board',path:'/competitions?status=open&activity=times'},entry); }
