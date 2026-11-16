@@ -43,16 +43,20 @@
 .leader-count strong { letter-spacing: -2px; font-weight: 550; font-size: 58px; }
 .leader-count span { font-size: 12px; color: var(--muted); }
 .leaderboard-note { margin: -8px 0 20px; font-size: 12px; }
-.table-wrap { background: var(--surface); border-radius: 8px; border: 1px solid var(--line); overflow: auto; }
+.table-wrap { max-height: min(68vh,620px); min-height: 320px; background: var(--surface); border-radius: 8px; border: 1px solid var(--line); overflow: auto; }
+.table-wrap:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .leader-table { font-size: 12px; text-align: left; border-collapse: collapse; width: 100%; }
-.leader-table th { white-space: nowrap; padding: 14px 20px; background: var(--bg); font-weight: 600; color: var(--muted); letter-spacing: 1px; font-size: 9px; }
-.leader-table td { border-top: 1px solid var(--line); padding: 17px 20px; }
+.leader-table th { position: sticky; z-index: 1; top: 0; white-space: nowrap; padding: 12px 20px; background: var(--bg); font-weight: 600; color: var(--muted); letter-spacing: 1px; font-size: 9px; }
+.leader-table td { height: 68px; padding: 10px 20px; border-top: 1px solid var(--line); }
+.leader-table tbody tr:not(.virtual-spacer) { height: 68px; }
+.leader-table tr.virtual-spacer td { height: auto; padding: 0; border: 0; }
 .leader-table tbody tr:hover { background: var(--soft); }
 .leader-table .rank { text-align: center; width: 85px; }
 .rank-num { color: var(--muted); font: 13px ui-monospace, monospace; }
 .rank-num.top { height: 29px; width: 29px; place-items: center; display: inline-grid; border-radius: 6px; color: var(--accent); background: var(--accent-bg); }
 .builder { min-width: 200px; gap: 12px; align-items: center; display: flex; }
-.builder a { font-weight: 650; }
+.builder > div { min-width: 0; }
+.builder a { max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; display: block; }
 .builder a:hover { color: var(--accent); }
 .builder small { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 360px; font-size: 10px; color: var(--muted); display: block; }
 .avatar { flex-shrink: 0; object-fit: cover; border-radius: 9px; height: 33px; width: 33px; }
@@ -93,6 +97,8 @@
   .leader-count { display: none; }
   .leader-table :is(td,th) { padding: 14px 12px; }
   .leader-table .rank { width: 45px; }
+  .builder { min-width: 160px; }
+  .builder a { max-width: 140px; }
   .leaderboard-note { font-size: 11px; }
   .profile-hero { padding: 28px 0; gap: 16px; }
   .profile-hero > .avatar { border-radius: 12px; font-size: 17px; height: 57px; width: 57px; }
