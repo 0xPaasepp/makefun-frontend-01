@@ -1,5 +1,5 @@
 [
-  {"file":"1-board.jpg","path":"#/","viewport":{"width":1280,"height":800}},
-  {"file":"2-bounty.jpg","path":"#/bounty/makefun-frontend-01","viewport":{"width":1280,"height":800}},
-  {"file":"3-leaderboard.jpg","path":"#/bounty/makefun-frontend-01/leaderboard","viewport":{"width":1280,"height":800}}
+  {"file":"01-board.jpg","route":"#/","viewport":{"width":1280,"height":800},"description":"Cover: first bounty selected beside the dense live list, with opportunity comparison and real request count."},
+  {"file":"02-bounty.jpg","route":"#/bounty/makefun-frontend-01","viewport":{"width":1280,"height":800},"description":"Standalone bounty brief and live pot."},
+  {"file":"03-leaderboard.jpg","route":"#/leaderboard/makefun-frontend-01","viewport":{"width":1280,"height":800},"description":"Live standings with windowed rows and pagination."}
 ]
